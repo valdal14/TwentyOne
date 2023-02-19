@@ -13,6 +13,8 @@
 		01D7295A29A22C6200DE36A0 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 01D7295929A22C6200DE36A0 /* Preview Assets.xcassets */; };
 		01D7296529A22DAE00DE36A0 /* DeckModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01D7296429A22DAE00DE36A0 /* DeckModel.swift */; };
 		01D7296D29A22DE200DE36A0 /* twentyoneTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01D7296C29A22DE200DE36A0 /* twentyoneTests.swift */; };
+		01D7297429A23A0300DE36A0 /* DeckViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01D7297329A23A0300DE36A0 /* DeckViewModel.swift */; };
+		01D7297629A23A7A00DE36A0 /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01D7297529A23A7A00DE36A0 /* NetworkService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -35,6 +37,8 @@
 		01D7296429A22DAE00DE36A0 /* DeckModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeckModel.swift; sourceTree = "<group>"; };
 		01D7296A29A22DE200DE36A0 /* twentyoneTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = twentyoneTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		01D7296C29A22DE200DE36A0 /* twentyoneTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = twentyoneTests.swift; sourceTree = "<group>"; };
+		01D7297329A23A0300DE36A0 /* DeckViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeckViewModel.swift; sourceTree = "<group>"; };
+		01D7297529A23A7A00DE36A0 /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,6 +103,7 @@
 		01D7296029A22C8500DE36A0 /* Service */ = {
 			isa = PBXGroup;
 			children = (
+				01D7297529A23A7A00DE36A0 /* NetworkService.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -114,6 +119,7 @@
 		01D7296229A22C9600DE36A0 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				01D7297329A23A0300DE36A0 /* DeckViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -234,7 +240,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				01D7297629A23A7A00DE36A0 /* NetworkService.swift in Sources */,
 				01D7295429A22C6200DE36A0 /* TwentyOne.swift in Sources */,
+				01D7297429A23A0300DE36A0 /* DeckViewModel.swift in Sources */,
 				01D7296529A22DAE00DE36A0 /* DeckModel.swift in Sources */,
 				01D7295229A22C6200DE36A0 /* twentyoneApp.swift in Sources */,
 			);
