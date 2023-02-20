@@ -42,7 +42,7 @@ final class twentyoneTests: XCTestCase {
 	//MARK: - Test Deck View Model
 	func testComputeCardValueFromNewDeck() async throws {
 		let networkService = NetworkService()
-		let sut = DeckViewModel(networkService: networkService)
+		let sut = await DeckViewModel(networkService: networkService)
 		let cards: [Card] = try await networkService.getCards(isTest: true)
 		
 		var deckCardValues: [Int] = []
@@ -56,7 +56,7 @@ final class twentyoneTests: XCTestCase {
 	}
 	
 	func testGenerateInGameDeckFromMock() async throws {
-		let sut = DeckViewModel(networkService: NetworkService())
+		let sut = await DeckViewModel(networkService: NetworkService())
 		try await sut.buildDeck(isTest: true)
 		
 		await sut.generateDeck()
@@ -71,7 +71,7 @@ final class twentyoneTests: XCTestCase {
 	}
 	
 	func testSetHandCountForDealerAndPlayer() async throws {
-		let sut = DeckViewModel(networkService: NetworkService())
+		let sut = await DeckViewModel(networkService: NetworkService())
 		try await sut.buildDeck(isTest: true)
 		
 		await sut.generateDeck()
@@ -89,7 +89,7 @@ final class twentyoneTests: XCTestCase {
 	}
 	
 	func testPlayFirstHand() async throws {
-		let sut = DeckViewModel(networkService: NetworkService())
+		let sut = await DeckViewModel(networkService: NetworkService())
 		try await sut.buildDeck(isTest: true)
 		
 		await sut.generateDeck()
@@ -118,7 +118,7 @@ final class twentyoneTests: XCTestCase {
 		let ace: Card = Card(url: deck.cards[0].url, value: deck.cards[0].value)
 		let jack: Card = Card(url: deck.cards[1].url, value: deck.cards[1].value)
 		
-		let sut = DeckViewModel(networkService: NetworkService())
+		let sut = await DeckViewModel(networkService: NetworkService())
 		try await sut.buildDeck(isTest: true)
 		
 		await sut.generateDeck()
@@ -143,7 +143,7 @@ final class twentyoneTests: XCTestCase {
 		let ace: Card = Card(url: deck.cards[0].url, value: deck.cards[0].value)
 		let seven: Card = Card(url: deck.cards[1].url, value: deck.cards[1].value)
 		
-		let sut = DeckViewModel(networkService: NetworkService())
+		let sut = await DeckViewModel(networkService: NetworkService())
 		try await sut.buildDeck(isTest: true)
 		
 		await sut.generateDeck()
@@ -161,21 +161,21 @@ final class twentyoneTests: XCTestCase {
 	//MARK: - Test Player View Model
 	
 	func testMoneyAmountWithNewBalanceZero() async throws {
-		let sut = DeckViewModel(networkService: NetworkService())
+		let sut = await DeckViewModel(networkService: NetworkService())
 		let _ = await sut.player.bet(amount: 1400)
 		let currentBalance = await sut.player.getMoney()
 		XCTAssertEqual(currentBalance, 0)
 	}
 	
 	func testMoneyAmountWithNewBalance400() async throws {
-		let sut = DeckViewModel(networkService: NetworkService())
+		let sut = await DeckViewModel(networkService: NetworkService())
 		let _ = await sut.player.bet(amount: 1000)
 		let currentBalance = await sut.player.getMoney()
 		XCTAssertEqual(currentBalance, 400)
 	}
 	
 	func testMoneyAmountWithNewBalanceInvalid() async throws {
-		let sut = DeckViewModel(networkService: NetworkService())
+		let sut = await DeckViewModel(networkService: NetworkService())
 		let status = await sut.player.bet(amount: 1410)
 		let currentBalance = await sut.player.getMoney()
 		XCTAssertEqual(status, false)
@@ -183,7 +183,7 @@ final class twentyoneTests: XCTestCase {
 	}
 	
 	func testDrawingNewCard() async throws {
-		let sut = DeckViewModel(networkService: NetworkService())
+		let sut = await DeckViewModel(networkService: NetworkService())
 		try await sut.buildDeck(isTest: true)
 		/// generate a new deck
 		await sut.generateDeck()

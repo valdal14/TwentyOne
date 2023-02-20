@@ -16,7 +16,7 @@ enum GameError: String, Error {
 	case insufficientFound = "You cannot bet more than you own"
 }
 
-actor DeckViewModel: ObservableObject {
+@MainActor class DeckViewModel: ObservableObject {
 	private let networkService: NetworkService
 	
 	@Published private(set) var dealer = DealerViewModel()
