@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0133888A29A2778E0050FFDB /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0133888929A2778E0050FFDB /* Player.swift */; };
+		0133888C29A277F80050FFDB /* Dealer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0133888B29A277F80050FFDB /* Dealer.swift */; };
+		0133888E29A278590050FFDB /* DealerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0133888D29A278590050FFDB /* DealerViewModel.swift */; };
+		0133889029A2787F0050FFDB /* PlayerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0133888F29A2787F0050FFDB /* PlayerViewModel.swift */; };
+		01C2C85429A35EF200E4D5E8 /* Players.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C2C85329A35EF200E4D5E8 /* Players.swift */; };
 		01D7295229A22C6200DE36A0 /* twentyoneApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01D7295129A22C6200DE36A0 /* twentyoneApp.swift */; };
 		01D7295429A22C6200DE36A0 /* TwentyOne.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01D7295329A22C6200DE36A0 /* TwentyOne.swift */; };
 		01D7295629A22C6200DE36A0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 01D7295529A22C6200DE36A0 /* Assets.xcassets */; };
@@ -28,6 +33,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0133888929A2778E0050FFDB /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
+		0133888B29A277F80050FFDB /* Dealer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dealer.swift; sourceTree = "<group>"; };
+		0133888D29A278590050FFDB /* DealerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DealerViewModel.swift; sourceTree = "<group>"; };
+		0133888F29A2787F0050FFDB /* PlayerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerViewModel.swift; sourceTree = "<group>"; };
+		01C2C85329A35EF200E4D5E8 /* Players.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Players.swift; sourceTree = "<group>"; };
 		01D7294E29A22C6200DE36A0 /* twentyone.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = twentyone.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		01D7295129A22C6200DE36A0 /* twentyoneApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = twentyoneApp.swift; sourceTree = "<group>"; };
 		01D7295329A22C6200DE36A0 /* TwentyOne.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwentyOne.swift; sourceTree = "<group>"; };
@@ -112,6 +122,8 @@
 			isa = PBXGroup;
 			children = (
 				01D7296429A22DAE00DE36A0 /* DeckModel.swift */,
+				0133888929A2778E0050FFDB /* Player.swift */,
+				0133888B29A277F80050FFDB /* Dealer.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -120,6 +132,9 @@
 			isa = PBXGroup;
 			children = (
 				01D7297329A23A0300DE36A0 /* DeckViewModel.swift */,
+				0133888D29A278590050FFDB /* DealerViewModel.swift */,
+				0133888F29A2787F0050FFDB /* PlayerViewModel.swift */,
+				01C2C85329A35EF200E4D5E8 /* Players.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -240,10 +255,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0133889029A2787F0050FFDB /* PlayerViewModel.swift in Sources */,
 				01D7297629A23A7A00DE36A0 /* NetworkService.swift in Sources */,
+				0133888E29A278590050FFDB /* DealerViewModel.swift in Sources */,
 				01D7295429A22C6200DE36A0 /* TwentyOne.swift in Sources */,
+				0133888C29A277F80050FFDB /* Dealer.swift in Sources */,
 				01D7297429A23A0300DE36A0 /* DeckViewModel.swift in Sources */,
+				01C2C85429A35EF200E4D5E8 /* Players.swift in Sources */,
 				01D7296529A22DAE00DE36A0 /* DeckModel.swift in Sources */,
+				0133888A29A2778E0050FFDB /* Player.swift in Sources */,
 				01D7295229A22C6200DE36A0 /* twentyoneApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

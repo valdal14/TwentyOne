@@ -29,5 +29,5 @@ struct Card: Decodable, Sendable {
 
 struct GameCard: Sendable {
 	let url: URL
-	let value: Int
+	var value: Int
 }
