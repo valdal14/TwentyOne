@@ -9,9 +9,12 @@ import SwiftUI
 
 @main
 struct twentyoneApp: App {
+	@StateObject var deckVM: DeckViewModel = DeckViewModel(networkService: NetworkService())
+	
     var body: some Scene {
         WindowGroup {
             TwentyOne()
+				.environmentObject(deckVM)
         }
     }
 }

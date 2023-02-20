@@ -125,8 +125,8 @@ final class twentyoneTests: XCTestCase {
 		
 		await sut.computeAce(cardValue: ace.value, player: sut.getPlayer())
 		
-		let gameCards: [GameCard] = [GameCard(url: ace.url, value: await sut.ace),
-									 GameCard(url: jack.url, value: Int(jack.value) ?? 0)]
+		let gameCards: [GameCard] = [GameCard(url: ace.url, value: await sut.ace, isFaceUP: true),
+									 GameCard(url: jack.url, value: Int(jack.value) ?? 0, isFaceUP: true)]
 		
 		let wasBlackJack = await sut.checkForBlackJack(cards: gameCards)
 		
@@ -150,8 +150,8 @@ final class twentyoneTests: XCTestCase {
 		
 		await sut.computeAce(cardValue: ace.value, player: sut.getPlayer())
 		
-		let gameCards: [GameCard] = [GameCard(url: ace.url, value: await sut.ace),
-									 GameCard(url: seven.url, value: Int(seven.value) ?? 0)]
+		let gameCards: [GameCard] = [GameCard(url: ace.url, value: await sut.ace, isFaceUP: true),
+									 GameCard(url: seven.url, value: Int(seven.value) ?? 0, isFaceUP: true)]
 		
 		let wasBlackJack = await sut.checkForBlackJack(cards: gameCards)
 		

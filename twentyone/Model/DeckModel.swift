@@ -30,4 +30,5 @@ struct Card: Decodable, Sendable {
 struct GameCard: Sendable {
 	let url: URL
 	var value: Int
+	var isFaceUP: Bool
 }

@@ -31,4 +31,8 @@ actor DealerViewModel: ObservableObject, Players {
 	func getCurrentDealer() -> Dealer {
 		return current
 	}
+	
+	func getMoney() -> Double {
+		return current.money
+	}
 }

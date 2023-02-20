@@ -12,6 +12,9 @@
 		0133888E29A278590050FFDB /* DealerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0133888D29A278590050FFDB /* DealerViewModel.swift */; };
 		0133889029A2787F0050FFDB /* PlayerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0133888F29A2787F0050FFDB /* PlayerViewModel.swift */; };
 		01C2C85429A35EF200E4D5E8 /* Players.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C2C85329A35EF200E4D5E8 /* Players.swift */; };
+		01C2C85629A3B0B000E4D5E8 /* DealerHeadeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C2C85529A3B0B000E4D5E8 /* DealerHeadeView.swift */; };
+		01C2C85829A3B4A600E4D5E8 /* GameCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C2C85729A3B4A600E4D5E8 /* GameCardView.swift */; };
+		01C2C85A29A3C09200E4D5E8 /* PlayerHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C2C85929A3C09200E4D5E8 /* PlayerHeaderView.swift */; };
 		01D7295229A22C6200DE36A0 /* twentyoneApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01D7295129A22C6200DE36A0 /* twentyoneApp.swift */; };
 		01D7295429A22C6200DE36A0 /* TwentyOne.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01D7295329A22C6200DE36A0 /* TwentyOne.swift */; };
 		01D7295629A22C6200DE36A0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 01D7295529A22C6200DE36A0 /* Assets.xcassets */; };
@@ -38,6 +41,9 @@
 		0133888D29A278590050FFDB /* DealerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DealerViewModel.swift; sourceTree = "<group>"; };
 		0133888F29A2787F0050FFDB /* PlayerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerViewModel.swift; sourceTree = "<group>"; };
 		01C2C85329A35EF200E4D5E8 /* Players.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Players.swift; sourceTree = "<group>"; };
+		01C2C85529A3B0B000E4D5E8 /* DealerHeadeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DealerHeadeView.swift; sourceTree = "<group>"; };
+		01C2C85729A3B4A600E4D5E8 /* GameCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameCardView.swift; sourceTree = "<group>"; };
+		01C2C85929A3C09200E4D5E8 /* PlayerHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerHeaderView.swift; sourceTree = "<group>"; };
 		01D7294E29A22C6200DE36A0 /* twentyone.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = twentyone.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		01D7295129A22C6200DE36A0 /* twentyoneApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = twentyoneApp.swift; sourceTree = "<group>"; };
 		01D7295329A22C6200DE36A0 /* TwentyOne.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwentyOne.swift; sourceTree = "<group>"; };
@@ -143,6 +149,9 @@
 			isa = PBXGroup;
 			children = (
 				01D7295329A22C6200DE36A0 /* TwentyOne.swift */,
+				01C2C85529A3B0B000E4D5E8 /* DealerHeadeView.swift */,
+				01C2C85729A3B4A600E4D5E8 /* GameCardView.swift */,
+				01C2C85929A3C09200E4D5E8 /* PlayerHeaderView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -259,9 +268,12 @@
 				01D7297629A23A7A00DE36A0 /* NetworkService.swift in Sources */,
 				0133888E29A278590050FFDB /* DealerViewModel.swift in Sources */,
 				01D7295429A22C6200DE36A0 /* TwentyOne.swift in Sources */,
+				01C2C85829A3B4A600E4D5E8 /* GameCardView.swift in Sources */,
 				0133888C29A277F80050FFDB /* Dealer.swift in Sources */,
 				01D7297429A23A0300DE36A0 /* DeckViewModel.swift in Sources */,
 				01C2C85429A35EF200E4D5E8 /* Players.swift in Sources */,
+				01C2C85629A3B0B000E4D5E8 /* DealerHeadeView.swift in Sources */,
+				01C2C85A29A3C09200E4D5E8 /* PlayerHeaderView.swift in Sources */,
 				01D7296529A22DAE00DE36A0 /* DeckModel.swift in Sources */,
 				0133888A29A2778E0050FFDB /* Player.swift in Sources */,
 				01D7295229A22C6200DE36A0 /* twentyoneApp.swift in Sources */,

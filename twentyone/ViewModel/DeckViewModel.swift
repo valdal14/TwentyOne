@@ -72,7 +72,7 @@ actor DeckViewModel: ObservableObject {
 	/// Generate the in-game deck
 	func generateDeck() {
 		for card in deck {
-			gameDeck.append(GameCard(url: card.url, value: computeCardValue(cardValue: card.value)))
+			gameDeck.append(GameCard(url: card.url, value: computeCardValue(cardValue: card.value), isFaceUP: true))
 		}
 	}
 	
@@ -116,7 +116,8 @@ actor DeckViewModel: ObservableObject {
 		let playerCard = gameDeck.remove(at: playerIndex)
 		/// dealer second card
 		let dealerIndexTwo = Int.random(in: 0..<gameDeck.count)
-		let delearCardTwo = gameDeck.remove(at: dealerIndexTwo)
+		var delearCardTwo = gameDeck.remove(at: dealerIndexTwo)
+		delearCardTwo.isFaceUP = false
 		/// player first card
 		let playerIndexTwo = Int.random(in: 0..<gameDeck.count)
 		let playerCardTwo = gameDeck.remove(at: playerIndexTwo)
@@ -210,7 +211,7 @@ actor DeckViewModel: ObservableObject {
 		if type(of: currentPlayer) == type(of: player) {
 			if playerCard.value == 1 {
 				await computeAce(cardValue: "ACE", player: currentPlayer)
-				let newAce = GameCard(url: playerCard.url, value: ace)
+				let newAce = GameCard(url: playerCard.url, value: ace, isFaceUP: true)
 				playerPlayedCards.append(newAce)
 				await player.setHandCount(playerCard.value)
 			} else {
@@ -220,7 +221,7 @@ actor DeckViewModel: ObservableObject {
 		} else {
 			if playerCard.value == 1 {
 				await computeAce(cardValue: "ACE", player: currentPlayer)
-				let newAce = GameCard(url: playerCard.url, value: ace)
+				let newAce = GameCard(url: playerCard.url, value: ace, isFaceUP: true)
 				dealerPlayedCards.append(newAce)
 				await dealer.setHandCount(playerCard.value)
 			} else {
