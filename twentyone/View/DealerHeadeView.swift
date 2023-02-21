@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct DealerHeadeView: View {
+	@EnvironmentObject var deckVM: DeckViewModel
+	
 	@Binding var total: Double
 	@Binding var round: Int
 	

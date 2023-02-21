@@ -12,4 +12,7 @@ protocol Players: Sendable {
 	func setHandCount(_ handCount: Int) async
 	func getBusted() async -> Bool
 	func setGetBusted(_ value: Bool) async
+	func getMoney() async -> Double
+	func addMoney(_ value: Double) async
+	func withdrawMoney(_ value: Double) async
 }

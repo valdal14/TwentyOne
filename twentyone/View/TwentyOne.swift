@@ -11,7 +11,9 @@ struct TwentyOne: View {
 	@EnvironmentObject var deckVM: DeckViewModel
 	
 	@State private var colums : [GridItem] = [GridItem(.fixed(90), spacing: 3, alignment: .center),
-											   GridItem(.fixed(90), spacing: 3, alignment: .center)]
+											  GridItem(.fixed(90), spacing: 3, alignment: .center),
+											  GridItem(.fixed(90), spacing: 3, alignment: .center),
+											  GridItem(.fixed(90), spacing: 3, alignment: .center)]
 	
 	@State private var showNetworkError: Bool = false
 	@State private var playerHand: [GameCard] = []
@@ -22,7 +24,7 @@ struct TwentyOne: View {
 	@State private var counter: Int = 0
 	@State private var round: Int = 1
 	
-    var body: some View {
+	var body: some View {
 		ZStack {
 			GeometryReader { proxy in
 				Image("table")
@@ -30,10 +32,10 @@ struct TwentyOne: View {
 					.scaledToFit()
 					.frame(width: proxy.size.width, height: proxy.size.height)
 			}
-			VStack {
+			VStack(alignment: .center) {
 				DealerHeadeView(total: $dealerBalance, round: $round)
 				LazyVGrid(columns: colums, alignment: .center, spacing: 10) {
-					ForEach(dealerHand, id: \.url) { card in
+					ForEach(deckVM.dealerPlayedCards, id: \.url) { card in
 						GameCardView(cardURL: Binding<URL>(
 							get: { card.url }, set: {_ in }), cardValue: Binding<Int>(
 								get: { card.value }, set: { _ in }), isFaceUp: card.isFaceUP)
@@ -41,16 +43,22 @@ struct TwentyOne: View {
 				}
 				Spacer()
 				LazyVGrid(columns: colums, alignment: .center, spacing: 10) {
-					ForEach(playerHand, id: \.url) { card in
+					ForEach(deckVM.playerPlayedCards, id: \.url) { card in
 						GameCardView(cardURL: Binding<URL>(
 							get: { card.url }, set: {_ in }), cardValue: Binding<Int>(
 								get: { card.value }, set: { _ in }), isFaceUp: card.isFaceUP)
 					}
 				}
 				Spacer()
-				PlayerHeaderView(total: $playerBalance, currentScore: $playerCurrentScore)
+				PlayerHeaderView(totalMoney: $playerBalance, currentScore: $playerCurrentScore)
 			}
 			.padding()
+		}
+		.alert("Player Won Hand", isPresented: $deckVM.playerWon) {
+			Button("OK", role: .cancel) { }
+		}
+		.alert("Dealer Won Hand", isPresented: $deckVM.dealerWon) {
+			Button("OK", role: .cancel) { }
 		}
 		.onAppear {
 			Task {
@@ -58,13 +66,13 @@ struct TwentyOne: View {
 					/// get cards from api
 					try await deckVM.buildDeck(isTest: false)
 					/// generate in-game deck
-					await deckVM.generateDeck()
+					deckVM.generateDeck()
 					/// setup the first hand
 					await deckVM.playFirstHand(player: deckVM.getPlayer(), dealder: deckVM.getDealer())
 					/// get dealer first hand
-					dealerHand = await deckVM.getDealerPlayedCards()
+					dealerHand = deckVM.getDealerPlayedCards()
 					/// get player first hand
-					playerHand = await deckVM.getPlayerPlayedCards()
+					playerHand = deckVM.getPlayerPlayedCards()
 					/// get player and dealer balance
 					playerBalance = await deckVM.getPlayer().getMoney()
 					dealerBalance = await deckVM.getDealer().getMoney()
@@ -77,12 +85,17 @@ struct TwentyOne: View {
 				}
 			}
 		}
+		.onChange(of: playerBalance, perform: { _ in
+			Task {
+				dealerBalance = await deckVM.dealer.getMoney()
+			}
+		})
 		.edgesIgnoringSafeArea(.all)
-    }
+	}
 }
 
 struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        TwentyOne()
-    }
+	static var previews: some View {
+		TwentyOne()
+	}
 }

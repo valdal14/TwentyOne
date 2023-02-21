@@ -20,21 +20,27 @@ struct GameCardView: View {
 		ZStack {
 			AsyncImage(url: cardURL) { image in
 				if isFaceUp {
-					image
-						.resizable()
-						.scaledToFill()
-						.frame(width: cardW, height: cardH)
+					withAnimation(.linear(duration: 2)) {
+						image
+							.resizable()
+							.scaledToFill()
+							.frame(width: cardW, height: cardH)
+					}
 				} else {
+					withAnimation(.linear(duration: 0.5)) {
+						Image("cardBack")
+							.resizable()
+							.scaledToFill()
+							.frame(width: cardW, height: cardH)
+					}
+				}
+			} placeholder: {
+				withAnimation(.linear(duration: 0.5)) {
 					Image("cardBack")
 						.resizable()
 						.scaledToFill()
-					.frame(width: cardW, height: cardH)
+						.frame(width: cardW, height: cardH)
 				}
-			} placeholder: {
-				Image("cardBack")
-					.resizable()
-					.scaledToFill()
-					.frame(width: cardW, height: cardH)
 			}
 		}
 		.rotation3DEffect(Angle(degrees: degree), axis: (x: 0, y: 1, z: 0))

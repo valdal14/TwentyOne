@@ -28,6 +28,9 @@ enum GameError: String, Error {
 	@Published private(set) var busted: Bool = false
 	@Published private(set) var wasBlackJackDone: Bool = false
 	@Published private(set) var showError: Bool = false
+	@Published var dealerWon: Bool = false
+	@Published var playerWon: Bool = false
+	
 	private let maxHandCount: Int = 21
 	private(set) var deck: [Card] = []
 	
@@ -49,9 +52,12 @@ enum GameError: String, Error {
 	/// parameters - cardValue: String
 	func computeAce<T: Players>(cardValue: String, player: T) async {
 		let playerHandCount = await player.getHandCount()
+		
 		if cardValue == "ACE" && playerHandCount <= 10 {
 			ace = 11
-		} else {
+		}
+		
+		if cardValue == "ACE" && playerHandCount >= 11 {
 			ace = 1
 		}
 	}
@@ -117,7 +123,7 @@ enum GameError: String, Error {
 		/// dealer second card
 		let dealerIndexTwo = Int.random(in: 0..<gameDeck.count)
 		var delearCardTwo = gameDeck.remove(at: dealerIndexTwo)
-		delearCardTwo.isFaceUP = false
+		delearCardTwo.isFaceUP = true
 		/// player first card
 		let playerIndexTwo = Int.random(in: 0..<gameDeck.count)
 		let playerCardTwo = gameDeck.remove(at: playerIndexTwo)
@@ -149,6 +155,18 @@ enum GameError: String, Error {
 		
 		for card in playerPlayedCards {
 			await player.setHandCount(card.value)
+		}
+		
+		if checkForBlackJack(cards: playerPlayedCards) && checkForBlackJack(cards: dealerPlayedCards) {
+			dealerWon = true
+		}
+		
+		if checkForBlackJack(cards: playerPlayedCards) && (checkForBlackJack(cards: dealerPlayedCards) == false) {
+			playerWon = true
+		}
+		
+		if (checkForBlackJack(cards: playerPlayedCards) == false) && checkForBlackJack(cards: dealerPlayedCards) {
+			dealerWon = true
 		}
 	}
 	
@@ -204,7 +222,7 @@ enum GameError: String, Error {
 	/// player or dealer current count
 	///
 	/// parameters: - currentPlayer: T
-	func drawNewCard<T: Players>(currentPlayer: T) async {
+	func drawNewCard<T: Players>(currentPlayer: T, currentBet: Double) async {
 		let index = Int.random(in: 0..<gameDeck.count)
 		let playerCard = gameDeck.remove(at: index)
 		
@@ -214,9 +232,21 @@ enum GameError: String, Error {
 				let newAce = GameCard(url: playerCard.url, value: ace, isFaceUP: true)
 				playerPlayedCards.append(newAce)
 				await player.setHandCount(playerCard.value)
+				if await player.getHandCount() > 21 {
+					await player.setGetBusted(true)
+					if await player.getBusted() {
+						dealerWon = true
+					}
+				}
 			} else {
 				playerPlayedCards.append(playerCard)
 				await player.setHandCount(playerCard.value)
+				if await player.getHandCount() > 21 {
+					await player.setGetBusted(true)
+					if await player.getBusted() {
+						dealerWon = true
+					}
+				}
 			}
 		} else {
 			if playerCard.value == 1 {
@@ -224,9 +254,21 @@ enum GameError: String, Error {
 				let newAce = GameCard(url: playerCard.url, value: ace, isFaceUP: true)
 				dealerPlayedCards.append(newAce)
 				await dealer.setHandCount(playerCard.value)
+				if await dealer.getHandCount() > 21 {
+					await dealer.setGetBusted(true)
+					if await dealer.getBusted() {
+						playerWon = true
+					}
+				}
 			} else {
 				dealerPlayedCards.append(playerCard)
 				await dealer.setHandCount(playerCard.value)
+				if await dealer.getHandCount() > 21 {
+					await dealer.setGetBusted(true)
+					if await dealer.getBusted() {
+						playerWon = true
+					}
+				}
 			}
 		}
 	}
@@ -243,5 +285,139 @@ enum GameError: String, Error {
 	/// returns: - [GameCard]
 	func getPlayerPlayedCards() -> [GameCard] {
 		return playerPlayedCards
+	}
+	
+	/// Returns whether the player won
+	///
+	///returns: - Bool
+	func checkIfPlayerWon() -> Bool {
+		return playerWon
+	}
+	
+	/// Returns whether the dealer won
+	///
+	///returns: - Bool
+	func checkIfDealerWon() -> Bool {
+		return dealerWon
+	}
+	
+	func playerDecidedToStand(playerBet: Double) async {
+		/// get current player and dealer hand
+		let playerScore = await player.getHandCount()
+		/// check for blackjack
+		let didPlayerHitBlackJack = checkForBlackJack(cards: playerPlayedCards)
+		let didDealerHitBlackJack = checkForBlackJack(cards: dealerPlayedCards)
+		if didDealerHitBlackJack && didPlayerHitBlackJack {
+			dealerWon = true
+		} else if didPlayerHitBlackJack && (didDealerHitBlackJack == false) {
+			playerWon = true
+		} else if (didPlayerHitBlackJack == false) && didDealerHitBlackJack {
+			dealerWon = true
+		} else {
+			if await dealer.getHandCount() >= playerScore {
+				dealerWon = true
+			} else {
+				while await dealer.getHandCount() <= playerScore {
+					await drawNewCard(currentPlayer: dealer, currentBet: playerBet)
+					try? await Task.sleep(for: .seconds(2))
+					
+					let newHandCount = await dealer.getHandCount()
+					
+					if newHandCount == playerScore {
+						dealerWon = true
+						break
+					}
+					
+					if newHandCount > 21 {
+						await dealer.setGetBusted(true)
+						if await dealer.getBusted() {
+							playerWon = true
+							break
+						}
+					}
+					
+					if newHandCount > playerScore && newHandCount <= 21 {
+						dealerWon = true
+						break
+					}
+				}
+			}
+		}
+		
+		await addOrRemoveMoneyFromBalance(currentBet: playerBet)
+	}
+	
+	func playerDecidedToHit(playerBet: Double) async {
+		/// get current player and dealer hand
+		let dealerScore = await dealer.getHandCount()
+		/// check for blackjack
+		let didPlayerHitBlackJack = checkForBlackJack(cards: playerPlayedCards)
+		let didDealerHitBlackJack = checkForBlackJack(cards: dealerPlayedCards)
+		if didDealerHitBlackJack && didPlayerHitBlackJack {
+			dealerWon = true
+		} else if didPlayerHitBlackJack && (didDealerHitBlackJack == false) {
+			playerWon = true
+		} else if (didPlayerHitBlackJack == false) && didDealerHitBlackJack {
+			dealerWon = true
+		} else {
+			await drawNewCard(currentPlayer: player, currentBet: playerBet)
+			let playerScore = await player.getHandCount()
+			
+			if playerScore > 21 {
+				await player.setGetBusted(true)
+				dealerWon = true
+			}
+			
+			if playerScore > dealerScore && playerScore <= 21 {
+				while await dealer.getHandCount() <= playerScore {
+					await drawNewCard(currentPlayer: dealer, currentBet: playerBet)
+					try? await Task.sleep(for: .seconds(2))
+					
+					let newHandCount = await dealer.getHandCount()
+					
+					if newHandCount == playerScore {
+						dealerWon = true
+						break
+					}
+					
+					if newHandCount > 21 {
+						await dealer.setGetBusted(true)
+						if await dealer.getBusted() {
+							playerWon = true
+							break
+						}
+					}
+					
+					if newHandCount > playerScore && newHandCount <= 21 {
+						dealerWon = true
+						break
+					}
+				}
+			}
+			
+			if (playerScore == dealerScore) && (playerScore <= 21 && dealerScore <= 21) {
+				dealerWon = true
+			}
+		}
+		
+		await addOrRemoveMoneyFromBalance(currentBet: playerBet)
+	}
+	
+	func addOrRemoveMoneyFromBalance(currentBet: Double) async {
+		if playerWon {
+			await player.addMoney(currentBet)
+			await dealer.withdrawMoney(currentBet)
+		} else {
+			await dealer.addMoney(currentBet)
+			await player.withdrawMoney(currentBet)
+		}
+		
+		if await player.getMoney() <= 0 {
+			dealerWon = true
+		}
+		
+		if await dealer.getMoney() <= 0 {
+			playerWon = true
+		}
 	}
 }

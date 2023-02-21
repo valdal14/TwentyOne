@@ -158,6 +158,37 @@ final class twentyoneTests: XCTestCase {
 		XCTAssertTrue(wasBlackJack == false)
 	}
 	
+	func testComputeAcesToGetTheRightValueFromFirstHand() async throws {
+		let payload = """
+{"success": true, "deck_id": "5ffa11tgchtw", "cards": [{"code": "0D", "image": "https://deckofcardsapi.com/static/img/AH.png", "value": "ACE", "suit": "DIAMONDS"}, {"code": "0D", "image": "https://deckofcardsapi.com/static/img/AH.png", "value": "ACE", "suit": "DIAMONDS"}], "remaining": 50}
+""".data(using: .utf8)
+		
+		let deck = try JSONDecoder().decode(DeckModel.self, from: payload!)
+		let firstAce: Card = Card(url: deck.cards[0].url, value: deck.cards[0].value)
+		let secondAce: Card = Card(url: deck.cards[0].url, value: deck.cards[0].value)
+		
+		let sut = await DeckViewModel(networkService: NetworkService())
+		try await sut.buildDeck(isTest: true)
+		
+		await sut.generateDeck()
+		
+		await sut.computeAce(cardValue: firstAce.value, player: sut.getPlayer())
+		await sut.setHandCount(cardValue: sut.ace, player: sut.getPlayer())
+		var gameCards: [GameCard] = [GameCard(url: firstAce.url, value: await sut.ace, isFaceUP: true)]
+		
+		await sut.computeAce(cardValue: secondAce.value, player: sut.getPlayer())
+		await sut.setHandCount(cardValue: sut.ace, player: sut.getPlayer())
+		gameCards.append(GameCard(url: secondAce.url, value: await sut.ace, isFaceUP: true))
+		
+		let wasBlackJack = await sut.checkForBlackJack(cards: gameCards)
+		
+		XCTAssertTrue(wasBlackJack == false)
+		
+		// get player hand to check it has 2 aces and the sum is 12
+		let playerHand = await sut.getPlayer().getHandCount()
+		XCTAssertEqual(playerHand, 12)
+	}
+	
 	//MARK: - Test Player View Model
 	
 	func testMoneyAmountWithNewBalanceZero() async throws {
@@ -199,7 +230,7 @@ final class twentyoneTests: XCTestCase {
 		}
 		
 		if await sut.getPlayer().getHandCount() < sut.getDealer().getHandCount() {
-			await sut.drawNewCard(currentPlayer: sut.getPlayer())
+			await sut.drawNewCard(currentPlayer: sut.getPlayer(), currentBet: 100)
 			let playerCount = await sut.getPlayer().getHandCount()
 			print(playerCount)
 			let currentPlayerHand = await sut.getPlayerPlayedCards()
@@ -207,11 +238,16 @@ final class twentyoneTests: XCTestCase {
 		}
 		
 		if await sut.getPlayer().getHandCount() > sut.getDealer().getHandCount() {
-			await sut.drawNewCard(currentPlayer: sut.getDealer())
+			await sut.drawNewCard(currentPlayer: sut.getDealer(), currentBet: 100)
 			let dealderCount = await sut.getDealer().getHandCount()
 			print(dealderCount)
 			let currentDealerHand = await sut.getDealerPlayedCards()
 			XCTAssertTrue(currentDealerHand.count == 3)
 		}
+	}
+	
+	//MARK: Test player and dealer balance
+	func testPlayerAndDelaerBalanceAfterHandCompletion() async throws {
+		let sut = await DeckViewModel(networkService: NetworkService())
 	}
 }

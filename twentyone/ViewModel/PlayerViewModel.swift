@@ -42,7 +42,15 @@ actor PlayerViewModel: ObservableObject, Players {
 		}
 	}
 	
-	func getMoney() -> Double {
+	func getMoney() async -> Double {
 		return current.money
+	}
+	
+	func addMoney(_ value: Double) async {
+		current.money += value
+	}
+	
+	func withdrawMoney(_ value: Double) async {
+		current.money -= value
 	}
 }
