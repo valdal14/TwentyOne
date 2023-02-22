@@ -50,15 +50,25 @@ struct TwentyOne: View {
 					}
 				}
 				Spacer()
-				PlayerHeaderView(totalMoney: $playerBalance, currentScore: $playerCurrentScore)
+				PlayerHeaderView()
 			}
 			.padding()
 		}
 		.alert("Player Won Hand", isPresented: $deckVM.playerWon) {
-			Button("OK", role: .cancel) { }
+			Button("OK", role: .cancel) {
+				Task {
+					await deckVM.restartHand()
+					round += 1
+				}
+			}
 		}
 		.alert("Dealer Won Hand", isPresented: $deckVM.dealerWon) {
-			Button("OK", role: .cancel) { }
+			Button("OK", role: .cancel) {
+				Task {
+					await deckVM.restartHand()
+					round += 1
+				}
+			}
 		}
 		.onAppear {
 			Task {

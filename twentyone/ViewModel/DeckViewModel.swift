@@ -25,9 +25,7 @@ enum GameError: String, Error {
 	@Published private(set) var dealerPlayedCards: [GameCard] = []
 	@Published private(set) var playerPlayedCards: [GameCard] = []
 	@Published private(set) var ace: Int = 0
-	@Published private(set) var busted: Bool = false
 	@Published private(set) var wasBlackJackDone: Bool = false
-	@Published private(set) var showError: Bool = false
 	@Published var dealerWon: Bool = false
 	@Published var playerWon: Bool = false
 	
@@ -287,20 +285,6 @@ enum GameError: String, Error {
 		return playerPlayedCards
 	}
 	
-	/// Returns whether the player won
-	///
-	///returns: - Bool
-	func checkIfPlayerWon() -> Bool {
-		return playerWon
-	}
-	
-	/// Returns whether the dealer won
-	///
-	///returns: - Bool
-	func checkIfDealerWon() -> Bool {
-		return dealerWon
-	}
-	
 	func playerDecidedToStand(playerBet: Double) async {
 		/// get current player and dealer hand
 		let playerScore = await player.getHandCount()
@@ -418,6 +402,19 @@ enum GameError: String, Error {
 		
 		if await dealer.getMoney() <= 0 {
 			playerWon = true
+		}
+	}
+	
+	func restartHand() async {
+		if gameDeck.count >= 8 {
+			print("card left in deck: \(gameDeck.count)")
+			dealerPlayedCards = []
+			playerPlayedCards = []
+			wasBlackJackDone = false
+			playerWon = false
+			dealerWon = false
+			try? await Task.sleep(for: .seconds(2))
+			await playFirstHand(player: player, dealder: dealer)
 		}
 	}
 }

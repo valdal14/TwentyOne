@@ -10,8 +10,7 @@ import SwiftUI
 struct PlayerHeaderView: View {
 	@EnvironmentObject var deckVM: DeckViewModel
 	
-	@Binding var totalMoney: Double
-	@Binding var currentScore: Int
+	@State private var totalMoney: Double = 0
 	
 	@State private var didBet: Bool = true
 	@State private var didBetFinished: Bool = true
@@ -82,7 +81,6 @@ struct PlayerHeaderView: View {
 				Button {
 					Task {
 						await deckVM.playerDecidedToStand(playerBet: currentBet)
-						currentScore = await deckVM.player.getHandCount()
 						totalMoney = await deckVM.player.getMoney()
 					}
 				} label: {
@@ -93,7 +91,6 @@ struct PlayerHeaderView: View {
 				Button {
 					Task {
 						await deckVM.playerDecidedToHit(playerBet: currentBet)
-						currentScore = await deckVM.player.getHandCount()
 						totalMoney = await deckVM.player.getMoney()
 					}
 				} label: {
@@ -112,11 +109,15 @@ struct PlayerHeaderView: View {
 					.font(.title)
 					.fontWeight(.bold)
 					.foregroundColor(.white)
-				Spacer()
-				Text("Hand: \(currentScore)")
+				Text("player")
 					.font(.title)
 					.fontWeight(.bold)
 					.foregroundColor(.white)
+			}
+		}
+		.onAppear {
+			Task {
+				totalMoney = await deckVM.player.getMoney()
 			}
 		}
 		.padding()
@@ -125,8 +126,7 @@ struct PlayerHeaderView: View {
 
 struct PlayerHeaderView_Previews: PreviewProvider {
 	@State static var total: Double = 1400
-	@State static var currentScore: Int = 14
     static var previews: some View {
-		PlayerHeaderView(totalMoney: $total, currentScore: $currentScore)
+		PlayerHeaderView()
     }
 }
